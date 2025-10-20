@@ -6,77 +6,88 @@ using System.Linq;
 
 var cache = new FileCache();
 
-// var testPerson = new Person(
-//     "Rick",
-//     "Sanchez",
-//     "Human",
-//     "Alive",
-//     "Earth (C-137)",
-//     51
-// );
-
-// Console.WriteLine(testPerson);
-
 var service = new RnMPeopleService(cache);
 
-Console.WriteLine("Fetching page 1...");
+var ui = new ConsoleUi();
+
 var people = await service.GetAllAsync();
-Console.WriteLine($"Loaded {people.Count} people from page 1.");
-Console.WriteLine(people.FirstOrDefault()?.ToString() ?? "(no data)");
+Console.WriteLine($"Loaded {people.Count} characters.");
 
 
+var bySpecies = people
+    .GroupBy(p => p.Species ?? "(Unknown)")
+    .ToDictionary(g => g.Key, g => g.ToList());
 
-// var service = new RnMPeopleService(cache);
-// var ui = new ConsoleUi();
+while (true)
+{
+    ui.PrintMenu();
+    Console.Write("> ");
+    var choice = Console.ReadLine();
 
-// Console.WriteLine("Fetching Rick and Morty characters... please wait.");
+    if (choice == "0") break;
 
-// // TODO: Call GetAllAsync() to fetch all people.
-// var people = await service.GetAllAsync();
+    switch (choice)
+    {
+        case "1":
 
-// // TODO: Build a dictionary where key = species, value = list of people
-// // Use LINQ: GroupBy + ToDictionary
-// // Example: Dictionary<string, List<Person>> bySpecies = ...
+            Console.Write("Enter last name prefix: ");
+            var prefix = (Console.ReadLine() ?? "").Trim();
 
-// while (true)
-// {
-//     ui.PrintMenu();
-//     Console.Write("> ");
-//     var choice = Console.ReadLine();
+            var filtered = people
+                .Where(p => !string.IsNullOrEmpty(p.LastName) &&
+                p.LastName.StartsWith(prefix, StringComparison.OrdinalIgnoreCase));
 
-//     if (choice == "0") break;
+            ui.PrintPeople(filtered);
+            break;
 
-//     switch (choice)
-//     {
-//         case "1":
-//             // TODO: Ask for a prefix input
-//             // TODO: Use LINQ .Where() to filter by last name prefix
-//             // TODO: Print the filtered results
-//             break;
+        case "2":
 
-//         case "2":
-//             // TODO: Ask for N (how many top characters)
-//             // TODO: Order by descending EpisodeCount
-//             // TODO: Take(N) and print the results
-//             break;
+            Console.Write("Enter N: ");
+            var input = Console.ReadLine();
+            var ok = int.TryParse(input, out var n);
+            if (!ok || n <= 0) n = 5; // fallback
 
-//         case "3":
-//             // TODO: Use LINQ to group by species
-//             // TODO: Select new { Species, Count }
-//             // TODO: Order by descending Count
-//             // TODO: Print formatted summary
-//             break;
+            var topN = people
+                .OrderByDescending(p => p.EpisodeCount)
+                .ThenBy(p => p.LastName)
+                .Take(n);
 
-//         case "4":
-//             // TODO: Use LINQ .Select() to project into new anonymous object
-//             // Example: new { Name, Species, EpisodeCount }
-//             // TODO: Print all results
-//             break;
+            ui.PrintPeople(topN);
+            break;
 
-//         default:
-//             Console.WriteLine("Unknown option.");
-//             break;
-//     }
+        case "3":
 
-//     Console.WriteLine();
-// }
+            var summary = bySpecies
+                .Select(kv => new { Species = kv.Key, Count = kv.Value.Count })
+                .OrderByDescending(x => x.Count)
+                .ThenBy(x => x.Species);
+
+            foreach (var row in summary)
+                Console.WriteLine($"{row.Species,-15} : {row.Count,3}");
+
+            break;
+
+        case "4":
+            var projection = people
+                .Select(p => new
+                {
+                    Name = $"{p.FirstName} {p.LastName}".Trim(),
+                    Species = p.Species ?? "(Unknown)",
+                    Episodes = p.EpisodeCount
+                })
+                .OrderBy(x => x.Name);
+
+            Console.WriteLine("Name                 Species        Episodes");
+            Console.WriteLine(new string('-', 55));
+            foreach (var x in projection)
+                Console.WriteLine($"{x.Name,-20}  {x.Species,-12}  {x.Episodes,7}");
+
+            break;
+
+        default:
+            Console.WriteLine("Unknown option.");
+            break;
+    }
+
+    Console.WriteLine();
+}
