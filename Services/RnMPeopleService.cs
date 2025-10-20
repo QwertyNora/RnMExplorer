@@ -5,12 +5,6 @@ using RnMExplorer.Infrastructure;
 
 namespace RnMExplorer.Services;
 
-// TODO: Create the internal DTO-classes that matches the API (Rick and Morty):
-// - RnmPage { RnmInfo? Info; List<RnmCharacter> Results; }
-// - RnmInfo { int Count; int Pages; string? Next; }
-// - RnmCharacter { string? Name; string? Species; string? Status; RnmOrigin? Origin; List<string> Episode; DateTime? Created; }
-// - RnmOrigin { string? Name; }
-
 public sealed class RnMPeopleService : IPeopleService
 {
     private readonly HttpClient _http = new() { BaseAddress = new Uri("https://rickandmortyapi.com/") };
