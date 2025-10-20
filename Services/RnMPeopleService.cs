@@ -30,3 +30,6 @@ public sealed class RnMPeopleService : IPeopleService
     // 4. Deserialize JSON to RnmPage with System.Text.Json
     // 5. Map to Person-object (split Name to FirstName/LastName, count Episode.Count)
 }
+
+// TODO: DTOs. 
+// Purpose: Map API-response into C# objects for deserialization. 
