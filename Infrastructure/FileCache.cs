@@ -7,10 +7,13 @@ public sealed class FileCache
 
     public FileCache()
     {
-        // TODO: Get the base directory where the app is running
-        // Hint: AppContext.BaseDirectory gives you a stable path
-        // TODO: Combine it with "Data" using Path.Combine
-        // TODO: Create the "Data" directory if it doesn't exist
+        var baseDir = AppContext.BaseDirectory;
+
+        var dataDir = Path.Combine(baseDir, "Data");
+
+        Directory.CreateDirectory(dataDir);
+
+        _dataDir = dataDir;
     }
 
     // TODO: WriteAsync(fileName, content)
