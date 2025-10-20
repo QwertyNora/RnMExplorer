@@ -1,0 +1,21 @@
+using RnMExplorer.Domain;
+
+namespace RnMExplorer.Services;
+
+// TODO: Create the internal DTO-classes that matches the API (Rick and Morty):
+// - RnmPage { RnmInfo? Info; List<RnmCharacter> Results; }
+// - RnmInfo { int Count; int Pages; string? Next; }
+// - RnmCharacter { string? Name; string? Species; string? Status; RnmOrigin? Origin; List<string> Episode; DateTime? Created; }
+// - RnmOrigin { string? Name; }
+
+public sealed class RnMPeopleService : IPeopleService
+{
+    // TODO: Declare fileds for HttpClient, FileCache, JsonSerializerOptions
+
+    // TODO: Implement GetAllAsync()
+    // 1. Get first page: "api/character?page=1"
+    // 2. While != null, continue
+    // 3. Cacha every page in Data/ as rnm-characters-page-{page}.json
+    // 4. Deserialize JSON to RnmPage with System.Text.Json
+    // 5. Map to Person-object (split Name to FirstName/LastName, count Episode.Count)
+}
