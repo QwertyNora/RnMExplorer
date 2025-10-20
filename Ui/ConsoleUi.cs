@@ -5,7 +5,6 @@ namespace RnMExplorer.Ui;
 // Responsible for all console user interaction (printing menus and data).
 public sealed class ConsoleUi
 {
-    // TODO: Display a simple menu with user options.
     public void PrintMenu()
     {
         Console.WriteLine("""
@@ -18,12 +17,30 @@ public sealed class ConsoleUi
         """);
     }
 
-    // TODO: Print a list of Person objects in a table-like format.
-    // Example format:
-    // Rick Sanchez        | Human      | 51 episodes
+    private string Truncate(string? value, int maxLength)
+    {
+        if (string.IsNullOrEmpty(value)) return "";
+        return value.Length <= maxLength ? value : value.Substring(0, maxLength - 1) + "…";
+    }
+
+
     public void PrintPeople(IEnumerable<Person> people)
     {
-        // TODO: Loop through each person and print formatted data.
-        // Use string interpolation for nice alignment.
+
+        Console.WriteLine("First Name      Last Name       Species         Episodes   Origin");
+        Console.WriteLine(new string('-', 80));
+
+        foreach (var p in people)
+        {
+            var origin = Truncate(p.OriginName, 15);
+
+            Console.WriteLine(
+                $"{p.FirstName,-15} {p.LastName,-15} {p.Species,-12} {p.EpisodeCount,5}   {origin,19}"
+            );
+        }
+
+        Console.WriteLine();
+        Console.WriteLine($"Total: {people.Count()} people shown.");
     }
+
 }
