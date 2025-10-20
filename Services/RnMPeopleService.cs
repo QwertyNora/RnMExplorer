@@ -1,3 +1,5 @@
+using System.Net.Http.Headers;
+using System.Text.Json;
 using RnMExplorer.Domain;
 using RnMExplorer.Infrastructure;
 
@@ -16,6 +18,10 @@ public sealed class RnMPeopleService : IPeopleService
     private readonly HttpClient _http = new() { BaseAddress = new Uri("https://rickandmortyapi.com/") };
 
     private readonly FileCache _cache;
+
+    private readonly JsonSerializerOptions _json = new(JsonSerializerDefaults.Web);
+
+    public RnMPeopleService(FileCache cache) => _cache = cache;
 
     // TODO: Implement GetAllAsync()
     // 1. Get first page: "api/character?page=1"
