@@ -13,8 +13,6 @@ namespace RnMExplorer.Services;
 
 public sealed class RnMPeopleService : IPeopleService
 {
-    // TODO: Declare fileds for HttpClient, FileCache, JsonSerializerOptions
-
     private readonly HttpClient _http = new() { BaseAddress = new Uri("https://rickandmortyapi.com/") };
 
     private readonly FileCache _cache;
