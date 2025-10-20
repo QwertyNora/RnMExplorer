@@ -2,7 +2,6 @@ namespace RnMExplorer.Domain;
 
 public sealed class Person
 {
-    // TODO: Add properties
     public string FirstName { get; }
     public string LastName { get; }
     public string? Species { get; }
