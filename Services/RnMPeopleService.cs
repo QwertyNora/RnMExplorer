@@ -17,13 +17,10 @@ public sealed class RnMPeopleService : IPeopleService
 
     public async Task<IReadOnlyList<Person>> GetAllAsync(CancellationToken ct = default)
     {
-        //URL for first page
         var url = "api/character?page=1";
 
-        // Filename for cache
         var cacheFile = "rnm-characters-page-1.json";
 
-        // Read from cache if possible, otherwise get
         string json;
         if (_cache.TryRead(cacheFile, out var cached) && !string.IsNullOrWhiteSpace(cached))
         {
@@ -37,10 +34,8 @@ public sealed class RnMPeopleService : IPeopleService
             await _cache.WriteAsync(cacheFile, json, ct);
         }
 
-        // Deserialize
         var page = JsonSerializer.Deserialize<RnMPage>(json, _json) ?? new RnMPage();
 
-        // Map to Domainmodel Person
         var people = new List<Person>();
         foreach (var character in page.Results)
         {
