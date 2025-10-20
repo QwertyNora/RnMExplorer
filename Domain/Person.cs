@@ -25,4 +25,10 @@ public sealed class Person
         OriginName = originName;
         EpisodeCount = episodeCount;
     }
+
+    public override string ToString()
+    {
+        return $"{FirstName} {LastName,-15} | {Species,-10} | {EpisodeCount,3} eps | {OriginName}";
+    }
+
 }
