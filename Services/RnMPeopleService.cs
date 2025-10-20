@@ -12,6 +12,8 @@ public sealed class RnMPeopleService : IPeopleService
 {
     // TODO: Declare fileds for HttpClient, FileCache, JsonSerializerOptions
 
+    private readonly HttpClient _http = new() { BaseAddress = new Uri("https://rickandmortyapi.com/") };
+
     // TODO: Implement GetAllAsync()
     // 1. Get first page: "api/character?page=1"
     // 2. While != null, continue
