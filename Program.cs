@@ -4,9 +4,6 @@ using RnMExplorer.Infrastructure;
 using RnMExplorer.Ui;
 using System.Linq;
 
-// This is the entry point that connects everything together:
-// FileCache → RnmPeopleService → ConsoleUi
-
 var cache = new FileCache();
 
 var testPerson = new Person(
