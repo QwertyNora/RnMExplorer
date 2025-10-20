@@ -1,6 +1,6 @@
-using RnmExplorer.Domain;
+using RnMExplorer.Domain;
 
-namespace RnmExplorer.Ui;
+namespace RnMExplorer.Ui;
 
 // Responsible for all console user interaction (printing menus and data).
 public sealed class ConsoleUi
