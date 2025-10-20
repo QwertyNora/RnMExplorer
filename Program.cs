@@ -6,16 +6,23 @@ using System.Linq;
 
 var cache = new FileCache();
 
-var testPerson = new Person(
-    "Rick",
-    "Sanchez",
-    "Human",
-    "Alive",
-    "Earth (C-137)",
-    51
-);
+// var testPerson = new Person(
+//     "Rick",
+//     "Sanchez",
+//     "Human",
+//     "Alive",
+//     "Earth (C-137)",
+//     51
+// );
 
-Console.WriteLine(testPerson);
+// Console.WriteLine(testPerson);
+
+var service = new RnMPeopleService(cache);
+
+Console.WriteLine("Fetching page 1...");
+var people = await service.GetAllAsync();
+Console.WriteLine($"Loaded {people.Count} people from page 1.");
+Console.WriteLine(people.FirstOrDefault()?.ToString() ?? "(no data)");
 
 
 
