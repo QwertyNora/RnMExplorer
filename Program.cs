@@ -1,5 +1,5 @@
-﻿// using RnmExplorer.Domain;
-// using RnmExplorer.Services;
+﻿using RnMExplorer.Domain;
+using RnMExplorer.Services;
 using RnMExplorer.Infrastructure;
 using RnMExplorer.Ui;
 using System.Linq;
@@ -8,18 +8,18 @@ using System.Linq;
 // FileCache → RnmPeopleService → ConsoleUi
 
 var cache = new FileCache();
-Console.WriteLine("Created/using data dir. Now try writing a file next.");
 
-await cache.WriteAsync("smoketest.json", "{ \"ok\": true }");
+var testPerson = new Person(
+    "Rick",
+    "Sanchez",
+    "Human",
+    "Alive",
+    "Earth (C-137)",
+    51
+);
 
-if (cache.TryRead("smoketest.json", out var txt))
-{
-    Console.WriteLine($"Read {txt.Length} chars from cache.");
-}
-else
-{
-    Console.WriteLine("Could not read smoketest.json");
-}
+Console.WriteLine(testPerson);
+
 
 
 // var service = new RnMPeopleService(cache);
