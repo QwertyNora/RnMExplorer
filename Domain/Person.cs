@@ -8,5 +8,21 @@ public sealed class Person
     public string? Status { get; }
     public string? OriginName { get; }
     public int EpisodeCount { get; }
-    // TODO: Implement constructor
+
+    public Person(
+        string firstName,
+        string lastName,
+        string? species,
+        string? status,
+        string? originName,
+        int episodeCount
+    )
+    {
+        FirstName = firstName;
+        LastName = lastName;
+        Species = species;
+        Status = status;
+        OriginName = originName;
+        EpisodeCount = episodeCount;
+    }
 }
