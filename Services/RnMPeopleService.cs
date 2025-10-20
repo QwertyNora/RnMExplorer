@@ -21,6 +21,55 @@ public sealed class RnMPeopleService : IPeopleService
     // 3. Cacha every page in Data/ as rnm-characters-page-{page}.json
     // 4. Deserialize JSON to RnmPage with System.Text.Json
     // 5. Map to Person-object (split Name to FirstName/LastName, count Episode.Count)
+
+    public async Task<IReadOnlyList<Person>> GetAllAsync(CancellationToken ct = default)
+    {
+        //URL for first page
+        var url = "api/character?page=1";
+
+        // Filename for cache
+        var cacheFile = "rnm-characters-page-1.json";
+
+        // Read from cache if possible, otherwise get
+        string json;
+        if (_cache.TryRead(cacheFile, out var cached) && !string.IsNullOrWhiteSpace(cached))
+        {
+            json = cached;
+        }
+        else
+        {
+            var response = await _http.GetAsync(url, ct);
+            response.EnsureSuccessStatusCode();
+            json = await response.Content.ReadAsStringAsync(ct);
+            await _cache.WriteAsync(cacheFile, json, ct);
+        }
+
+        // Deserialize
+        var page = JsonSerializer.Deserialize<RnMPage>(json, _json) ?? new RnMPage();
+
+        // Map to Domainmodel Person
+        var people = new List<Person>();
+        foreach (var character in page.Results)
+        {
+            var fullName = character.Name ?? "";
+            var parts = fullName.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+            var first = parts.Length > 0 ? parts[0] : "";
+            var last = parts.Length > 0 ? parts[^1] : "";
+
+            var person = new Person(
+                firstName: first,
+                lastName: last,
+                species: character.Species,
+                status: character.Status,
+                originName: character.Origin?.Name,
+                episodeCount: character.Episode.Count
+            );
+
+            people.Add(person);
+        }
+
+        return people;
+    }
 }
 
 file sealed class RnMPage
