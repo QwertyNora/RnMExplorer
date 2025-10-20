@@ -20,16 +20,22 @@ var bySpecies = people
 
 while (true)
 {
+    Console.Clear();
     ui.PrintMenu();
     Console.Write("> ");
     var choice = Console.ReadLine();
 
-    if (choice == "0") break;
+    if (choice == "0")
+    {
+        Console.Clear();
+        Console.WriteLine("Goodbye!");
+        break;
+    }
 
     switch (choice)
     {
         case "1":
-
+            Console.Clear();
             Console.Write("Enter last name prefix: ");
             var prefix = (Console.ReadLine() ?? "").Trim();
 
@@ -38,10 +44,13 @@ while (true)
                 p.LastName.StartsWith(prefix, StringComparison.OrdinalIgnoreCase));
 
             ui.PrintPeople(filtered);
+            Console.WriteLine();
+            Console.WriteLine("(Press ENTER to return to menu...)");
+            Console.ReadLine();
             break;
 
         case "2":
-
+            Console.Clear();
             Console.Write("Enter N: ");
             var input = Console.ReadLine();
             var ok = int.TryParse(input, out var n);
@@ -53,10 +62,13 @@ while (true)
                 .Take(n);
 
             ui.PrintPeople(topN);
+            Console.WriteLine();
+            Console.WriteLine("(Press ENTER to return to menu...)");
+            Console.ReadLine();
             break;
 
         case "3":
-
+            Console.Clear();
             var summary = bySpecies
                 .Select(kv => new { Species = kv.Key, Count = kv.Value.Count })
                 .OrderByDescending(x => x.Count)
@@ -65,9 +77,13 @@ while (true)
             foreach (var row in summary)
                 Console.WriteLine($"{row.Species,-15} : {row.Count,3}");
 
+            Console.WriteLine();
+            Console.WriteLine("(Press ENTER to return to menu...)");
+            Console.ReadLine();
             break;
 
         case "4":
+            Console.Clear();
             var projection = people
                 .Select(p => new
                 {
@@ -82,10 +98,17 @@ while (true)
             foreach (var x in projection)
                 Console.WriteLine($"{x.Name,-20}  {x.Species,-12}  {x.Episodes,7}");
 
+            Console.WriteLine();
+            Console.WriteLine("(Press ENTER to return to menu...)");
+            Console.ReadLine();
             break;
 
         default:
+            Console.Clear();
             Console.WriteLine("Unknown option.");
+            Console.WriteLine();
+            Console.WriteLine("(Press ENTER to return to menu...)");
+            Console.ReadLine();
             break;
     }
 
