@@ -29,5 +29,29 @@ public sealed class RnMPeopleService : IPeopleService
     // 5. Map to Person-object (split Name to FirstName/LastName, count Episode.Count)
 }
 
-// TODO: DTOs. 
-// Purpose: Map API-response into C# objects for deserialization. 
+file sealed class RnMPage
+{
+    public RnMInfo? Info { get; set; }
+    public List<RnmCharacter> Results { get; set; } = [];
+}
+
+file sealed class RnMInfo
+{
+    public int Count { get; set; }
+    public int Pages { get; set; }
+    public string? Next { get; set; }
+}
+
+file sealed class RnmCharacter
+{
+    public string? Name { get; set; }
+    public string? Species { get; set; }
+    public string? Status { get; set; }
+    public RnMOrigin? Origin { get; set; }
+    public List<string> Episode { get; set; } = [];
+}
+
+file sealed class RnMOrigin
+{
+    public string? Name { get; set; }
+}
